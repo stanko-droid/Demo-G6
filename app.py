@@ -4,7 +4,8 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    jokes = [
+    # Skamten har kvar sina tecken, men variabelnamnen ar rena
+    joke_list = [
         "Varför var matematikboken ledsen? Den hade för många problem.",
         "Vad sa den ena väggen till den andra? Vi ses vid hörnet!",
         "Vilket djur är bäst på att smyga? Mysk-oxen.",
@@ -26,7 +27,7 @@ def home():
         "Vilket djur ser sämst? Allt-i-gatorn.",
         "Vad heter världens fattigaste kung? Kung-kurs."
     ]
-    return render_template('index.html', version='G6-SLAY-ULTIMATE', jokes=jokes)
+    return render_template('index.html', version='G6-SLAY-ULTIMATE', jokes=joke_list)
 
 if __name__ == '__main__':
     app.run(debug=True)

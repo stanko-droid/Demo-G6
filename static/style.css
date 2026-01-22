@@ -63,19 +63,16 @@ body {
     transition: opacity 0.3s;
 }
 
-/* FOOTER - Svart med Guld-glow */
 .gold-footer {
     margin-top: 50px;
     text-align: center;
     font-weight: bold;
     font-size: 1.1rem;
-    /* Här är den svart-guldiga färgen */
     color: #000; 
     text-shadow: 0 0 8px #bf953f, 0 0 2px #fcf6ba;
     letter-spacing: 2px;
 }
 
-/* Moln */
 .cloud {
     position: fixed; background: white; border-radius: 100px; opacity: 0.6; z-index: 1;
 }
