@@ -1,14 +1,12 @@
-from flask import Flask
+from flask import Flask, render_template  # <-- Viktigt: Glöm inte importera render_template!
 
 app = Flask(__name__)
 
-
-# --- USER STORY 1 LÖSNING ---
-@app.route("/")
-def hello():
-    # Här är ändringen som User Storyn krävde:
-    return "<h1>Welcome to G6! 🚀</h1>"
-
+# --- HÄR ÄR DEN SAMMANSLAGNA LÖSNINGEN ---
+@app.route('/')
+def home():
+    # Vi renderar HTML-filen OCH skickar med versionsnumret
+    return render_template('index.html', version='1.0.0')
 
 if __name__ == '__main__':
     app.run(debug=True)
