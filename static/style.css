@@ -5,7 +5,12 @@ html {
     /* Gradient från himmelsblå till ljusare horisont */
     background: linear-gradient(to bottom, #87CEEB 0%, #E0F7FA 100%);
     overflow-x: hidden; /* Döljer scrollbar i sidled för molnen */
-    font-family: Arial, sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+h1, h2, h3 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
 }
 
 body {
