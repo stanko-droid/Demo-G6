@@ -1,158 +1,91 @@
-/* --- 1. Himmelsblå bakgrund --- */
-html {
-    height: 100%;
-    margin: 0;
-    /* Gradient från himmelsblå till ljusare horisont */
-    background: linear-gradient(to bottom, #87CEEB 0%, #E0F7FA 100%);
-    overflow-x: hidden; /* Döljer scrollbar i sidled för molnen */
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-}
-
-h1, h2, h3 {
-    font-family: 'Poppins', sans-serif;
-    font-weight: 700;
-}
-
 body {
     margin: 0;
     padding: 0;
     min-height: 100vh;
+    background: linear-gradient(to bottom, #1e90ff 0%, #87ceeb 100%);
+    font-family: "Times New Roman", Times, serif;
+    overflow-x: hidden;
 }
 
-/* --- 2. Layout-container --- */
-/* Vi flyttar layouten hit så att body kan vara fullbredd för bakgrunden */
 .container {
-    max-width: 800px;
+    max-width: 900px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 40px 20px;
     position: relative;
-    z-index: 1; /* Ser till att texten ligger ÖVER molnen */
+    z-index: 10;
 }
 
-/* --- 3. Moln-konfiguration --- */
-/* Skapar moln med pseudo-element för att slippa extra HTML */
-html::after, body::before, body::after {
-    content: "";
-    position: fixed; 
-    background: #fff;
-    border-radius: 100px;
-    z-index: -1; /* Lägger molnen BAKOM texten */
-    opacity: 0.8;
+.bling-title {
+    font-size: 10rem;
+    margin: 0;
+    font-weight: 900;
+    text-align: center;
+    background: linear-gradient(to bottom, #bf953f, #fcf6ba, #b38728);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(5px 5px 0px #000);
 }
 
-/* Moln 1 */
-html::after {
-    width: 120px; height: 60px;
-    top: 15%; 
-    box-shadow: 40px -15px 0 10px #fff, 70px 5px 0 5px #fff;
-    animation: moveClouds 28s linear infinite;
+.slay-tag {
+    text-align: center;
+    font-size: 2.5rem;
+    color: white;
+    text-shadow: 2px 2px 10px #ff00ff;
+    font-style: italic;
+    margin-top: -20px;
 }
 
-/* Moln 2 */
-body::before {
-    width: 150px; height: 70px;
-    top: 45%; 
-    box-shadow: 50px -20px 0 15px #fff, 90px 10px 0 5px #fff;
-    animation: moveClouds 35s linear infinite;
-    animation-delay: -5s;
+.gold-btn {
+    background: linear-gradient(45deg, #bf953f, #fcf6ba, #b38728);
+    border: 3px solid #000;
+    color: #000;
+    padding: 15px 25px;
+    font-family: "Times New Roman", serif;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    border-radius: 5px;
 }
 
-/* Moln 3 */
-body::after {
-    width: 100px; height: 50px;
-    top: 75%; 
-    box-shadow: 30px -10px 0 5px #fff, 60px 0 0 5px #fff;
-    animation: moveClouds 45s linear infinite;
-    animation-delay: -15s;
+.gold-card {
+    background: rgba(0, 0, 0, 0.7);
+    border: 5px double #bf953f;
+    padding: 50px;
+    margin-top: 30px;
+    text-align: center;
 }
 
-/* --- 4. Animation --- */
-@keyframes moveClouds {
+.joke-text {
+    font-size: 2.2rem;
+    color: #fcf6ba;
+    font-style: italic;
+    transition: opacity 0.3s;
+}
+
+/* FOOTER - Svart med Guld-glow */
+.gold-footer {
+    margin-top: 50px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.1rem;
+    /* Här är den svart-guldiga färgen */
+    color: #000; 
+    text-shadow: 0 0 8px #bf953f, 0 0 2px #fcf6ba;
+    letter-spacing: 2px;
+}
+
+/* Moln */
+.cloud {
+    position: fixed; background: white; border-radius: 100px; opacity: 0.6; z-index: 1;
+}
+.c1 { width: 150px; height: 50px; top: 10%; animation: move 20s linear infinite; }
+.c2 { width: 250px; height: 80px; top: 25%; animation: move 40s linear infinite; }
+.c3 { width: 120px; height: 40px; top: 50%; animation: move 25s linear infinite; }
+.c4 { width: 200px; height: 60px; top: 70%; animation: move 50s linear infinite; }
+.c5 { width: 150px; height: 50px; top: 85%; animation: move 35s linear infinite; }
+
+@keyframes move {
     0% { left: -300px; }
-    100% { left: 100%; }
-}
-
-/* --- 5. Header / Hero styling: fluffiga moln och solglans --- */
-.hero {
-    position: relative;
-    padding: 40px 20px 20px 20px;
-    overflow: visible;
-}
-.sky-decor {
-    position: absolute;
-    left: 0; right: 0; top: 0;
-    height: 120px;
-    pointer-events: none;
-    z-index: 0;
-}
-.hero-content {
-    position: relative;
-    z-index: 2;
-}
-.hero-title {
-    font-size: 2.1rem;
-    margin: 0 0 8px 0;
-    color: #034f84; /* djupare blå för kontrast */
-    text-shadow: 0 6px 18px rgba(3,79,132,0.08);
-}
-.hero-sub { margin: 0; color: #056; }
-
-/* Sol: cirkulärt med strålar och glans */
-.sun {
-    position: absolute;
-    right: 10%;
-    top: 6px;
-    width: 90px;
-    height: 90px;
-    background: radial-gradient(circle at 30% 30%, #fff6c8 0%, #ffe082 30%, #ffc107 60%, #ffb300 100%);
-    border-radius: 50%;
-    box-shadow: 0 8px 30px rgba(255, 193, 7, 0.25), 0 0 40px rgba(255, 235, 59, 0.15) inset;
-    transform: translateZ(0);
-    animation: sunShine 3.6s ease-in-out infinite;
-}
-@keyframes sunShine {
-    0%,100% { transform: translateY(0) scale(1); filter: drop-shadow(0 0 0 rgba(255,210,65,0.0)); }
-    50% { transform: translateY(-4px) scale(1.02); filter: drop-shadow(0 0 18px rgba(255,210,65,0.25)); }
-}
-
-/* Flera fluffiga moln framför/under solen */
-.hero-clouds {
-    position: absolute;
-    left: -5%;
-    right: -5%;
-    top: 35px;
-    height: 90px;
-    background: transparent;
-}
-.hero-clouds::before, .hero-clouds::after {
-    content: "";
-    position: absolute;
-    background: #ffffff;
-    border-radius: 50%;
-    box-shadow: 40px -10px 0 8px #fff, 80px 5px 0 6px #fff, 120px -8px 0 10px #fff;
-    opacity: 0.98;
-}
-.hero-clouds::before {
-    left: 5%; width: 220px; height: 70px; top: 0;
-}
-.hero-clouds::after {
-    right: 10%; width: 160px; height: 60px; top: 18px;
-    transform: scale(0.95);
-}
-
-/* Liten glans över texten */
-.hero-title::after{
-    content: "";
-    display: block;
-    width: 60%; height: 6px;
-    margin: 10px auto 0 auto;
-    background: linear-gradient(90deg, rgba(255,255,255,0.0), rgba(255,255,255,0.65), rgba(255,255,255,0.0));
-    border-radius: 40px;
-    opacity: 0.9;
-}
-
-/* Mobilanpassning */
-@media (max-width: 480px) {
-    .sun { width: 64px; height: 64px; right: 6%; top: 8px; }
-    .hero-title { font-size: 1.6rem; }
+    100% { left: 110%; }
 }
