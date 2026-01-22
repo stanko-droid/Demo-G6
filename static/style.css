@@ -1,0 +1,68 @@
+/* --- 1. Himmelsblå bakgrund --- */
+html {
+    height: 100%;
+    margin: 0;
+    /* Gradient från himmelsblå till ljusare horisont */
+    background: linear-gradient(to bottom, #87CEEB 0%, #E0F7FA 100%);
+    overflow-x: hidden; /* Döljer scrollbar i sidled för molnen */
+    font-family: Arial, sans-serif;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+}
+
+/* --- 2. Layout-container --- */
+/* Vi flyttar layouten hit så att body kan vara fullbredd för bakgrunden */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+    z-index: 1; /* Ser till att texten ligger ÖVER molnen */
+}
+
+/* --- 3. Moln-konfiguration --- */
+/* Skapar moln med pseudo-element för att slippa extra HTML */
+html::after, body::before, body::after {
+    content: "";
+    position: fixed; 
+    background: #fff;
+    border-radius: 100px;
+    z-index: -1; /* Lägger molnen BAKOM texten */
+    opacity: 0.8;
+}
+
+/* Moln 1 */
+html::after {
+    width: 120px; height: 60px;
+    top: 15%; 
+    box-shadow: 40px -15px 0 10px #fff, 70px 5px 0 5px #fff;
+    animation: moveClouds 28s linear infinite;
+}
+
+/* Moln 2 */
+body::before {
+    width: 150px; height: 70px;
+    top: 45%; 
+    box-shadow: 50px -20px 0 15px #fff, 90px 10px 0 5px #fff;
+    animation: moveClouds 35s linear infinite;
+    animation-delay: -5s;
+}
+
+/* Moln 3 */
+body::after {
+    width: 100px; height: 50px;
+    top: 75%; 
+    box-shadow: 30px -10px 0 5px #fff, 60px 0 0 5px #fff;
+    animation: moveClouds 45s linear infinite;
+    animation-delay: -15s;
+}
+
+/* --- 4. Animation --- */
+@keyframes moveClouds {
+    0% { left: -300px; }
+    100% { left: 100%; }
+}
