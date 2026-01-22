@@ -71,3 +71,88 @@ body::after {
     0% { left: -300px; }
     100% { left: 100%; }
 }
+
+/* --- 5. Header / Hero styling: fluffiga moln och solglans --- */
+.hero {
+    position: relative;
+    padding: 40px 20px 20px 20px;
+    overflow: visible;
+}
+.sky-decor {
+    position: absolute;
+    left: 0; right: 0; top: 0;
+    height: 120px;
+    pointer-events: none;
+    z-index: 0;
+}
+.hero-content {
+    position: relative;
+    z-index: 2;
+}
+.hero-title {
+    font-size: 2.1rem;
+    margin: 0 0 8px 0;
+    color: #034f84; /* djupare blå för kontrast */
+    text-shadow: 0 6px 18px rgba(3,79,132,0.08);
+}
+.hero-sub { margin: 0; color: #056; }
+
+/* Sol: cirkulärt med strålar och glans */
+.sun {
+    position: absolute;
+    right: 10%;
+    top: 6px;
+    width: 90px;
+    height: 90px;
+    background: radial-gradient(circle at 30% 30%, #fff6c8 0%, #ffe082 30%, #ffc107 60%, #ffb300 100%);
+    border-radius: 50%;
+    box-shadow: 0 8px 30px rgba(255, 193, 7, 0.25), 0 0 40px rgba(255, 235, 59, 0.15) inset;
+    transform: translateZ(0);
+    animation: sunShine 3.6s ease-in-out infinite;
+}
+@keyframes sunShine {
+    0%,100% { transform: translateY(0) scale(1); filter: drop-shadow(0 0 0 rgba(255,210,65,0.0)); }
+    50% { transform: translateY(-4px) scale(1.02); filter: drop-shadow(0 0 18px rgba(255,210,65,0.25)); }
+}
+
+/* Flera fluffiga moln framför/under solen */
+.hero-clouds {
+    position: absolute;
+    left: -5%;
+    right: -5%;
+    top: 35px;
+    height: 90px;
+    background: transparent;
+}
+.hero-clouds::before, .hero-clouds::after {
+    content: "";
+    position: absolute;
+    background: #ffffff;
+    border-radius: 50%;
+    box-shadow: 40px -10px 0 8px #fff, 80px 5px 0 6px #fff, 120px -8px 0 10px #fff;
+    opacity: 0.98;
+}
+.hero-clouds::before {
+    left: 5%; width: 220px; height: 70px; top: 0;
+}
+.hero-clouds::after {
+    right: 10%; width: 160px; height: 60px; top: 18px;
+    transform: scale(0.95);
+}
+
+/* Liten glans över texten */
+.hero-title::after{
+    content: "";
+    display: block;
+    width: 60%; height: 6px;
+    margin: 10px auto 0 auto;
+    background: linear-gradient(90deg, rgba(255,255,255,0.0), rgba(255,255,255,0.65), rgba(255,255,255,0.0));
+    border-radius: 40px;
+    opacity: 0.9;
+}
+
+/* Mobilanpassning */
+@media (max-width: 480px) {
+    .sun { width: 64px; height: 64px; right: 6%; top: 8px; }
+    .hero-title { font-size: 1.6rem; }
+}
