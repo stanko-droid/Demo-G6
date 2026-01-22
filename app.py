@@ -3,7 +3,6 @@ import random
 
 app = Flask(__name__)
 
-
 @app.route('/')
 def home():
     jokes = [
@@ -15,7 +14,6 @@ def home():
     ]
     selected_joke = random.choice(jokes)
     return render_template('index.html', version='1.0.0', joke=selected_joke)
-
 
 if __name__ == '__main__':
     app.run(debug=True)
