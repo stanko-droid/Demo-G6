@@ -5,7 +5,7 @@ html {
     /* Gradient från himmelsblå till ljusare horisont */
     background: linear-gradient(to bottom, #87CEEB 0%, #E0F7FA 100%);
     overflow-x: hidden; /* Döljer scrollbar i sidled för molnen */
-    font-family: Arial, sans-serif;
+    font-family: 'Times New Roman', Georgia, serif;
 }
 
 body {
