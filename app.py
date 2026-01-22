@@ -1,14 +1,24 @@
-from flask import Flask
+from flask import Flask, render_template
+import random  # <--- 1. Importera verktyget för slump
 
 app = Flask(__name__)
 
+@app.route('/')
+def home():
+    # 2. Lista med skämt
+    jokes = [
+        "Varför var matematikboken ledsen? Den hade för många problem.",
+        "Vad sa den ena väggen till den andra? Vi ses vid hörnet!",
+        "Vilket djur är bäst på att smyga? Mysk-oxen.",
+        "Hur vet man att en bil är från Tyskland? Det hörs på lacken!",
+        "Det var en gång två bagare och en smet."
+    ]
+    
+    # 3. Välj ett slumpmässigt skämt
+    selected_joke = random.choice(jokes)
 
-# --- USER STORY 1 LÖSNING ---
-@app.route("/")
-def hello():
-    # Här är ändringen som User Storyn krävde:
-    return "<h1>Welcome to G6! 🚀</h1>"
-
+    # 4. Skicka skämtet OCH versionen till HTML
+    return render_template('index.html', version='1.0.0', joke=selected_joke)
 
 if __name__ == '__main__':
     app.run(debug=True)
