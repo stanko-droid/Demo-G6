@@ -22,8 +22,8 @@
             <div class="slay-tag">✨ SLAY ✨</div>
             
             <div style="display: flex; justify-content: center; gap: 20px; margin-top: 20px;">
-                <button id="musicBtn" onclick="toggleMusic()" class="gold-btn">🔈 PLAY MUSIC</button>
-                <button onclick="nextJoke()" class="gold-btn" style="background: linear-gradient(45deg, #00ff00, #fcf6ba, #00ff00);">💰 NEXT HUSTLE</button>
+                <button id="musicBtn" onclick="toggleMusic()" class="gold-btn">PLAY MUSIC</button>
+                <button onclick="nextJoke()" class="gold-btn" style="background: linear-gradient(45deg, #00ff00, #fcf6ba, #00ff00);">NEXT HUSTLE</button>
             </div>
         </header>
 
@@ -33,11 +33,11 @@
 
         <div class="gold-card">
             <h3 class="gold-text-header">STREET WISDOM:</h3>
-            <p id="joke-display" class="joke-text">"Laddar din hustle..."</p>
+            <p id="joke-display" class="joke-text">Laddar din hustle...</p>
         </div>
 
         <footer class="gold-footer">
-            <p>🏆 PREMIER LEAGUE DEVOPS: {{ version }} 🏆</p>
+            <p>PREMIER LEAGUE DEVOPS: {{ version }}</p>
         </footer>
     </div>
 
@@ -59,10 +59,10 @@
         function toggleMusic() {
             if (music.paused) {
                 music.play();
-                btn.innerHTML = "🔥 STOP MUSIC";
+                btn.innerHTML = "STOP MUSIC";
             } else {
                 music.pause();
-                btn.innerHTML = "🔈 PLAY MUSIC";
+                btn.innerHTML = "PLAY MUSIC";
             }
         }
         
