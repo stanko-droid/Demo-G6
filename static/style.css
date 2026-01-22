@@ -5,7 +5,8 @@ html {
     /* Gradient från himmelsblå till ljusare horisont */
     background: linear-gradient(to bottom, #87CEEB 0%, #E0F7FA 100%);
     overflow-x: hidden; /* Döljer scrollbar i sidled för molnen */
-    font-family: 'Times New Roman', Georgia, serif;
+    font-family: 'Times New Roman', Georgia, serif; /* Här behåller vi ditt önskade typsnitt */
+    color: #333;
 }
 
 body {
@@ -14,8 +15,13 @@ body {
     min-height: 100vh;
 }
 
+/* Rubriker i samma stil */
+h1, h2, h3 {
+    font-family: 'Times New Roman', Georgia, serif;
+    font-weight: bold;
+}
+
 /* --- 2. Layout-container --- */
-/* Vi flyttar layouten hit så att body kan vara fullbredd för bakgrunden */
 .container {
     max-width: 800px;
     margin: 0 auto;
@@ -25,7 +31,6 @@ body {
 }
 
 /* --- 3. Moln-konfiguration --- */
-/* Skapar moln med pseudo-element för att slippa extra HTML */
 html::after, body::before, body::after {
     content: "";
     position: fixed; 
