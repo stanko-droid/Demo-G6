@@ -20,19 +20,106 @@ body {
     margin: 0;
     font-weight: 900;
     text-align: center;
-    background: linear-gradient(to bottom, #bf953f, #fcf6ba, #b38728);
+    background: linear-gradient(45deg,
+        #bf953f, #fcf6ba, #b38728, #fcf6ba,
+        #ffd700, #fff, #ffd700, #bf953f);
+    background-size: 400% auto;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    filter: drop-shadow(5px 5px 0px #000);
+    filter: drop-shadow(2px 2px 0px #000)
+            drop-shadow(4px 4px 0px #333)
+            drop-shadow(6px 6px 0px #666)
+            drop-shadow(8px 8px 0px rgba(0,0,0,0.3))
+            drop-shadow(0 0 30px rgba(191, 149, 63, 1))
+            drop-shadow(0 0 60px rgba(252, 246, 186, 0.8))
+            drop-shadow(0 0 90px rgba(255, 215, 0, 0.6));
+    animation: megaShine 4s linear infinite,
+               float 3s ease-in-out infinite,
+               pulse 2s ease-in-out infinite;
+    transform-origin: center;
+}
+
+@keyframes megaShine {
+    0% { background-position: 0% center; }
+    100% { background-position: 400% center; }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px) scale(1); }
+    50% { transform: translateY(-15px) scale(1.02); }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        filter: drop-shadow(2px 2px 0px #000)
+                drop-shadow(4px 4px 0px #333)
+                drop-shadow(6px 6px 0px #666)
+                drop-shadow(8px 8px 0px rgba(0,0,0,0.3))
+                drop-shadow(0 0 30px rgba(191, 149, 63, 1))
+                drop-shadow(0 0 60px rgba(252, 246, 186, 0.8))
+                drop-shadow(0 0 90px rgba(255, 215, 0, 0.6));
+    }
+    50% {
+        filter: drop-shadow(2px 2px 0px #000)
+                drop-shadow(4px 4px 0px #333)
+                drop-shadow(6px 6px 0px #666)
+                drop-shadow(8px 8px 0px rgba(0,0,0,0.3))
+                drop-shadow(0 0 50px rgba(191, 149, 63, 1))
+                drop-shadow(0 0 100px rgba(252, 246, 186, 1))
+                drop-shadow(0 0 150px rgba(255, 215, 0, 0.9));
+    }
 }
 
 .slay-tag {
     text-align: center;
     font-size: 2.5rem;
-    color: white;
-    text-shadow: 2px 2px 10px #ff00ff;
+    font-weight: 900;
     font-style: italic;
     margin-top: -20px;
+    background: linear-gradient(90deg,
+        #ff00ff, #00ffff, #ffff00, #ff00ff,
+        #00ff00, #ff0080, #0080ff, #ff00ff);
+    background-size: 400% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 10px #ff00ff)
+            drop-shadow(0 0 20px #00ffff)
+            drop-shadow(0 0 30px #ffff00)
+            drop-shadow(0 0 40px rgba(255, 0, 255, 0.5))
+            drop-shadow(2px 2px 5px rgba(0, 0, 0, 0.8));
+    animation: rainbowShine 3s linear infinite,
+               slayBounce 1.5s ease-in-out infinite,
+               slayGlow 2s ease-in-out infinite;
+    transform-origin: center;
+    letter-spacing: 8px;
+}
+
+@keyframes rainbowShine {
+    0% { background-position: 0% center; }
+    100% { background-position: 400% center; }
+}
+
+@keyframes slayBounce {
+    0%, 100% { transform: scale(1) rotate(0deg); }
+    25% { transform: scale(1.1) rotate(-2deg); }
+    75% { transform: scale(1.1) rotate(2deg); }
+}
+
+@keyframes slayGlow {
+    0%, 100% {
+        filter: drop-shadow(0 0 10px #ff00ff)
+                drop-shadow(0 0 20px #00ffff)
+                drop-shadow(0 0 30px #ffff00)
+                drop-shadow(0 0 40px rgba(255, 0, 255, 0.5))
+                drop-shadow(2px 2px 5px rgba(0, 0, 0, 0.8));
+    }
+    50% {
+        filter: drop-shadow(0 0 20px #ff00ff)
+                drop-shadow(0 0 40px #00ffff)
+                drop-shadow(0 0 60px #ffff00)
+                drop-shadow(0 0 80px rgba(255, 0, 255, 0.8))
+                drop-shadow(2px 2px 5px rgba(0, 0, 0, 0.8));
+    }
 }
 
 .gold-btn {
