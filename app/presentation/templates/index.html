@@ -1,73 +1,172 @@
-<!DOCTYPE html>
-<html lang="sv">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>G6 - SLAY BLING EDITION</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
+{% extends "base.html" %}
 
-    <div class="cloud-container">
-        <div class="cloud c1"></div>
-        <div class="cloud c2"></div>
-        <div class="cloud c3"></div>
-        <div class="cloud c4"></div>
-        <div class="cloud c5"></div>
+{% block title %}G6 - Stay Ahead of the Curve{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero__container">
+        <h1 class="hero__title">Stay Ahead of the Curve</h1>
+        <p class="hero__subtitle">
+            Get the latest tech news delivered straight to your inbox.
+            No spam, just the stories that matter.
+        </p>
+        <button class="btn btn--primary hero__cta" id="subscribeBtn">
+            Subscribe Now
+        </button>
     </div>
+</section>
 
-    <div class="container">
-        <header style="text-align: center; margin-bottom: 50px;">
-            <h1 class="bling-title">G6</h1>
-            <div class="slay-tag">✨ SLAY ✨</div>
-            
-            <div style="display: flex; justify-content: center; gap: 20px; margin-top: 20px;">
-                <button id="musicBtn" onclick="toggleMusic()" class="gold-btn">PLAY MUSIC</button>
-                <button onclick="nextJoke()" class="gold-btn" style="background: linear-gradient(45deg, #00ff00, #fcf6ba, #00ff00);">NEXT HUSTLE</button>
-            </div>
-        </header>
-
-        <audio id="bgMusic" loop>
-            <source src="{{ url_for('static', filename='muzik.mp3') }}" type="audio/mpeg">
-        </audio>
-
-        <div class="gold-card">
-            <h3 class="gold-text-header">STREET WISDOM:</h3>
-            <p id="joke-display" class="joke-text">Laddar din hustle...</p>
+<!-- Subscribe Modal -->
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal" role="dialog" aria-labelledby="modalTitle" aria-modal="true">
+        <div class="modal__header">
+            <h2 class="modal__title" id="modalTitle">Coming Soon!</h2>
+            <button class="modal__close" id="modalClose" aria-label="Close modal">&times;</button>
         </div>
+        <div class="modal__body">
+            <p>We're working hard to bring you the best newsletter experience.</p>
+            <p style="margin-top: 1rem;">Check back soon to subscribe!</p>
+        </div>
+    </div>
+</div>
 
-        <footer class="gold-footer">
-            <p>PREMIER LEAGUE DEVOPS: {{ version }}</p>
-        </footer>
+<!-- Demo-G6 Original Content -->
+<div class="cloud-container">
+    <div class="cloud c1"></div>
+    <div class="cloud c2"></div>
+    <div class="cloud c3"></div>
+    <div class="cloud c4"></div>
+    <div class="cloud c5"></div>
+</div>
+
+<div class="container">
+    <header style="text-align: center; margin-bottom: 50px;">
+        <h1 class="bling-title">G6</h1>
+        <div class="slay-tag">✨ SLAY ✨</div>
+        
+        <div style="display: flex; justify-content: center; gap: 20px; margin-top: 20px;">
+            <button id="musicBtn" onclick="toggleMusic()" class="gold-btn">PLAY MUSIC</button>
+            <button onclick="nextJoke()" class="gold-btn" style="background: linear-gradient(45deg, #00ff00, #fcf6ba, #00ff00);">NEXT HUSTLE</button>
+        </div>
+    </header>
+
+    <audio id="bgMusic" loop>
+        <source src="{{ url_for('static', filename='muzik.mp3') }}" type="audio/mpeg">
+    </audio>
+
+    <div class="gold-card">
+        <h3 class="gold-text-header">STREET WISDOM:</h3>
+        <p id="joke-display" class="joke-text">Laddar din hustle...</p>
     </div>
 
-    <script>
-        // @ts-ignore - Jinja2 template syntax
-        const jokes = {{ jokes|tojson }};
-        const music = document.getElementById("bgMusic");
-        const btn = document.getElementById("musicBtn");
-        const jokeDisplay = document.getElementById("joke-display");
+    <footer class="gold-footer">
+        <p>PREMIER LEAGUE DEVOPS: {{ version }}</p>
+    </footer>
+</div>
+{% endblock %}
 
-        function nextJoke() {
-            const randomJoke = jokes[Math.floor(Math.random() * jokes.length)];
-            jokeDisplay.style.opacity = 0;
-            setTimeout(() => {
-                jokeDisplay.innerHTML = `"${randomJoke}"`;
-                jokeDisplay.style.opacity = 1;
-            }, 200);
-        }
+{% block extra_css %}
+<style>
+    /* Demo-G6 Original Cloud Styles */
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        position: relative;
+        z-index: 1;
+    }
 
-        function toggleMusic() {
-            if (music.paused) {
-                music.play();
-                btn.innerHTML = "STOP MUSIC";
-            } else {
-                music.pause();
-                btn.innerHTML = "PLAY MUSIC";
-            }
+    .cloud-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    .cloud {
+        position: fixed;
+        background: white;
+        border-radius: 100px;
+        opacity: 0.8;
+    }
+
+    .c1 { width: 150px; height: 50px; top: 10%; animation: move 20s linear infinite; }
+    .c2 { width: 250px; height: 80px; top: 25%; animation: move 40s linear infinite; }
+    .c3 { width: 120px; height: 40px; top: 50%; animation: move 25s linear infinite; }
+    .c4 { width: 200px; height: 60px; top: 70%; animation: move 50s linear infinite; }
+    .c5 { width: 150px; height: 50px; top: 85%; animation: move 35s linear infinite; }
+
+    @keyframes move {
+        0% { left: -300px; }
+        100% { left: 100%; }
+    }
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // @ts-ignore - Jinja2 template syntax
+    const jokes = {{ jokes|tojson }};
+    const music = document.getElementById("bgMusic");
+    const btn = document.getElementById("musicBtn");
+    const jokeDisplay = document.getElementById("joke-display");
+
+    function nextJoke() {
+        const randomJoke = jokes[Math.floor(Math.random() * jokes.length)];
+        jokeDisplay.style.opacity = 0;
+        setTimeout(() => {
+            jokeDisplay.innerHTML = `"${randomJoke}"`;
+            jokeDisplay.style.opacity = 1;
+        }, 200);
+    }
+
+    function toggleMusic() {
+        if (music.paused) {
+            music.play();
+            btn.innerHTML = "STOP MUSIC";
+        } else {
+            music.pause();
+            btn.innerHTML = "PLAY MUSIC";
         }
-        
-        window.onload = nextJoke;
-    </script>
-</body>
-</html>
+    }
+    
+    window.onload = nextJoke;
+
+    // Modal functionality
+    const subscribeBtn = document.getElementById('subscribeBtn');
+    const modalOverlay = document.getElementById('modalOverlay');
+    const modalClose = document.getElementById('modalClose');
+
+    // Open modal
+    subscribeBtn.addEventListener('click', function() {
+        modalOverlay.classList.add('active');
+        modalClose.focus();
+    });
+
+    // Close modal - close button
+    modalClose.addEventListener('click', function() {
+        modalOverlay.classList.remove('active');
+        subscribeBtn.focus();
+    });
+
+    // Close modal - click outside
+    modalOverlay.addEventListener('click', function(event) {
+        if (event.target === modalOverlay) {
+            modalOverlay.classList.remove('active');
+            subscribeBtn.focus();
+        }
+    });
+
+    // Close modal - Escape key
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape' && modalOverlay.classList.contains('active')) {
+            modalOverlay.classList.remove('active');
+            subscribeBtn.focus();
+        }
+    });
+</script>
+{% endblock %}
