@@ -46,27 +46,50 @@
         const music = document.getElementById("bgMusic");
         const btn = document.getElementById("musicBtn");
         const jokeDisplay = document.getElementById("joke-display");
-
+      
         function nextJoke() {
-            const randomJoke = jokes[Math.floor(Math.random() * jokes.length)];
-            jokeDisplay.style.opacity = 0;
-            setTimeout(() => {
-                jokeDisplay.innerHTML = `"${randomJoke}"`;
-                jokeDisplay.style.opacity = 1;
-            }, 200);
+          const randomJoke = jokes[Math.floor(Math.random() * jokes.length)];
+          jokeDisplay.style.opacity = 0;
+          setTimeout(() => {
+            jokeDisplay.innerHTML = `"${randomJoke}"`;
+            jokeDisplay.style.opacity = 1;
+          }, 200);
         }
-
+      
         function toggleMusic() {
-            if (music.paused) {
-                music.play();
-                btn.innerHTML = "STOP MUSIC";
-            } else {
-                music.pause();
-                btn.innerHTML = "PLAY MUSIC";
-            }
+          if (music.paused) {
+            music.play();
+            btn.innerHTML = "STOP MUSIC";
+          } else {
+            music.pause();
+            btn.innerHTML = "PLAY MUSIC";
+          }
         }
-        
+      
         window.onload = nextJoke;
-    </script>
+      
+        let welcomePlayed = false;
+      
+        function playWelcomeG6() {
+            console.log("playWelcomeG6 fired");
+
+          if (welcomePlayed) return;
+          welcomePlayed = true;
+      
+          const welcomeSound = new Audio("{{ url_for('static', filename='welcome.mp3') }}");
+      
+          const originalVolume = music.volume;
+          if (!music.paused) music.volume = 0.2;
+      
+          welcomeSound.play().catch(e => console.log("Welcome blocked:", e));
+      
+          welcomeSound.onended = () => {
+            if (!music.paused) music.volume = originalVolume;
+          };
+        }
+      
+        window.addEventListener('click', playWelcomeG6, { once: true });
+      </script>
+      
 </body>
 </html>
