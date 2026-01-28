@@ -42,6 +42,7 @@
     </div>
 
     <script>
+        // @ts-ignore - Jinja2 template syntax
         const jokes = {{ jokes|tojson }};
         const music = document.getElementById("bgMusic");
         const btn = document.getElementById("musicBtn");
