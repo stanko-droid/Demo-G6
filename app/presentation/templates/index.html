@@ -11,9 +11,6 @@
             Get the latest tech news delivered straight to your inbox.
             No spam, just the stories that matter.
         </p>
-        <a href="{{ url_for('public.subscribe') }}" class="btn btn--primary hero__cta">
-            Subscribe Now
-        </a>
     </div>
 </section>
 
@@ -44,6 +41,13 @@
     <div class="gold-card">
         <h3 class="gold-text-header">STREET WISDOM:</h3>
         <p id="joke-display" class="joke-text">Laddar din hustle...</p>
+    </div>
+
+    <!-- Subscribe Button -->
+    <div style="text-align: center; margin: 30px 0;">
+        <a href="{{ url_for('public.subscribe') }}" class="btn btn--primary">
+            Subscribe Now
+        </a>
     </div>
 
     <footer class="gold-footer">
