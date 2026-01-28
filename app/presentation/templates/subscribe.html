@@ -10,6 +10,12 @@
             Get the latest tech news delivered to your inbox every week.
         </p>
 
+        {% if error %}
+        <div class="form__error">
+            <p>{{ error }}</p>
+        </div>
+        {% endif %}
+
         <form class="form" action="{{ url_for('public.subscribe_confirm') }}" method="POST">
             <div class="form__group">
                 <label class="form__label" for="email">Email Address *</label>
@@ -19,6 +25,7 @@
                     name="email"
                     class="form__input"
                     placeholder="you@example.com"
+                    value="{{ email or '' }}"
                     required
                 >
             </div>
@@ -31,6 +38,7 @@
                     name="name"
                     class="form__input"
                     placeholder="Your name"
+                    value="{{ name or '' }}"
                 >
             </div>
 
@@ -106,6 +114,19 @@
     .form__submit {
         width: 100%;
         margin-top: 0.5rem;
+    }
+
+    .form__error {
+        background-color: #fee2e2;
+        border: 1px solid #fca5a5;
+        color: #dc2626;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .form__error p {
+        margin: 0;
     }
 
     .subscribe__back {
