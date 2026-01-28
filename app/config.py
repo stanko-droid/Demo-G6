@@ -17,6 +17,12 @@ class Config:
     DEBUG: bool = False
     TESTING: bool = False
 
+    # Database configuration
+    SQLALCHEMY_DATABASE_URI: str = os.environ.get(
+        "DATABASE_URL", "sqlite:///news_flash.db"
+    )
+    SQLALCHEMY_TRACK_MODIFICATIONS: bool = False
+
 
 @dataclass
 class DevelopmentConfig(Config):
@@ -30,6 +36,7 @@ class TestingConfig(Config):
     """Testing configuration."""
 
     TESTING: bool = True
+    SQLALCHEMY_DATABASE_URI: str = "sqlite:///:memory:"
 
 
 @dataclass
