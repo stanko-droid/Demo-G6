@@ -28,7 +28,9 @@ class JokeRepository:
             "Vem är bäst på att tvätta i djungeln? Gor-illa.",
             "Vad sa kaffekoppen till den andra kaffekoppen? Är det bön-söndag idag?",
             "Vilket djur ser sämst? Allt-i-gatorn.",
-            "Vad heter världens fattigaste kung? Kung-kurs."
+            "Vad heter världens fattigaste kung? Kung-kurs." 
+            "Varför var DevOps-ingenjören singel? Han kunde inte committa.",    
+            "SQL gick in på en bar, gick fram till två bord och frågade: Får jag joina?"
         ]
 
     def get_all_jokes(self) -> list[str]:
