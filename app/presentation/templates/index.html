@@ -3,17 +3,6 @@
 {% block title %}G6 - Stay Ahead of the Curve{% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
-<section class="hero">
-    <div class="hero__container">
-        <h1 class="hero__title">Stay Ahead of the Curve</h1>
-        <p class="hero__subtitle">
-            Get the latest tech news delivered straight to your inbox.
-            No spam, just the stories that matter.
-        </p>
-    </div>
-</section>
-
 <!-- Demo-G6 Original Content -->
 <div class="cloud-container">
     <div class="cloud c1"></div>
@@ -39,19 +28,30 @@
     </audio>
 
     <div class="gold-card">
-        <h3 class="gold-text-header">STREET WISDOM:</h3>
+        <h3 class="gold-text-header neon-blink">STREET WISDOM:</h3>
         <p id="joke-display" class="joke-text">Laddar din hustle...</p>
     </div>
 
+    <!-- Hero Section - Moved Down -->
+    <section class="hero">
+        <div class="hero__container">
+            <h1 class="hero__title">Stay Ahead of the Curve</h1>
+            <p class="hero__subtitle">
+                Get the latest tech news delivered straight to your inbox.
+                No spam, just the stories that matter.
+            </p>
+        </div>
+    </section>
+
     <!-- Subscribe Button -->
-    <div style="text-align: center; margin: 30px 0;">
+    <div style="text-align: center; margin-top: 40px; margin-bottom: 40px;">
         <a href="{{ url_for('public.subscribe') }}" class="btn btn--primary">
             Subscribe Now
         </a>
     </div>
 
     <footer class="gold-footer">
-        <p>PREMIER LEAGUE DEVOPS: {{ version }}</p>
+        <p>PREMIER LEAGUE DEVOPS: 2</p>
     </footer>
 </div>
 {% endblock %}
@@ -93,6 +93,23 @@
     @keyframes move {
         0% { left: -300px; }
         100% { left: 100%; }
+    }
+
+    .neon-blink {
+        color: #ff006e;
+        text-shadow: 0 0 10px #ff006e, 0 0 20px #ff006e, 0 0 30px #ff006e;
+        animation: neon-flicker 0.15s infinite;
+    }
+
+    @keyframes neon-flicker {
+        0%, 100% { 
+            color: #ff006e;
+            text-shadow: 0 0 10px #ff006e, 0 0 20px #ff006e, 0 0 30px #ff006e;
+        }
+        50% {
+            color: #ff1493;
+            text-shadow: 0 0 5px #ff006e, 0 0 10px #ff006e;
+        }
     }
 </style>
 {% endblock %}
