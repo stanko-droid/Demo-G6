@@ -1,0 +1,88 @@
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background: linear-gradient(to bottom, #1e90ff 0%, #87ceeb 100%);
+    font-family: "Times New Roman", Times, serif;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    position: relative;
+    z-index: 10;
+}
+
+.bling-title {
+    font-size: 10rem;
+    margin: 0;
+    font-weight: 900;
+    text-align: center;
+    background: linear-gradient(to bottom, #bf953f, #fcf6ba, #b38728);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(5px 5px 0px #000);
+}
+
+.slay-tag {
+    text-align: center;
+    font-size: 2.5rem;
+    color: white;
+    text-shadow: 2px 2px 10px #ff00ff;
+    font-style: italic;
+    margin-top: -20px;
+}
+
+.gold-btn {
+    background: linear-gradient(45deg, #bf953f, #fcf6ba, #b38728);
+    border: 3px solid #000;
+    color: #000;
+    padding: 15px 25px;
+    font-family: "Times New Roman", serif;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    border-radius: 5px;
+}
+
+.gold-card {
+    background: rgba(0, 0, 0, 0.7);
+    border: 5px double #bf953f;
+    padding: 50px;
+    margin-top: 30px;
+    text-align: center;
+}
+
+.joke-text {
+    font-size: 2.2rem;
+    color: #fcf6ba;
+    font-style: italic;
+    transition: opacity 0.3s;
+}
+
+.gold-footer {
+    margin-top: 50px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #000; 
+    text-shadow: 0 0 8px #bf953f, 0 0 2px #fcf6ba;
+    letter-spacing: 2px;
+}
+
+.cloud {
+    position: fixed; background: white; border-radius: 100px; opacity: 0.6; z-index: 1;
+}
+.c1 { width: 150px; height: 50px; top: 10%; animation: move 20s linear infinite; }
+.c2 { width: 250px; height: 80px; top: 25%; animation: move 40s linear infinite; }
+.c3 { width: 120px; height: 40px; top: 50%; animation: move 25s linear infinite; }
+.c4 { width: 200px; height: 60px; top: 70%; animation: move 50s linear infinite; }
+.c5 { width: 150px; height: 50px; top: 85%; animation: move 35s linear infinite; }
+
+@keyframes move {
+    0% { left: -300px; }
+    100% { left: 110%; }
+}
