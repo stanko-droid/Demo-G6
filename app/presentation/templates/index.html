@@ -11,9 +11,6 @@
             Get the latest tech news delivered straight to your inbox.
             No spam, just the stories that matter.
         </p>
-        <a href="{{ url_for('public.subscribe') }}" class="btn btn--primary hero__cta">
-            Subscribe Now
-        </a>
     </div>
 </section>
 
@@ -49,6 +46,13 @@
     <footer class="gold-footer">
         <p>PREMIER LEAGUE DEVOPS: {{ version }}</p>
     </footer>
+
+    <!-- Subscribe Button -->
+    <div style="text-align: center; margin-top: 40px; margin-bottom: 40px;">
+        <a href="{{ url_for('public.subscribe') }}" class="btn btn--primary">
+            Subscribe Now
+        </a>
+    </div>
 </div>
 {% endblock %}
 
