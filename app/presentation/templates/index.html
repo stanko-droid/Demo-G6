@@ -28,13 +28,9 @@
     </audio>
 
     <div class="gold-card">
-        <h3 class="gold-text-header">STREET WISDOM:</h3>
+        <h3 class="gold-text-header neon-blink">STREET WISDOM:</h3>
         <p id="joke-display" class="joke-text">Laddar din hustle...</p>
     </div>
-
-    <footer class="gold-footer">
-        <p>PREMIER LEAGUE DEVOPS: 2</p>
-    </footer>
 
     <!-- Hero Section - Moved Down -->
     <section class="hero">
@@ -53,6 +49,10 @@
             Subscribe Now
         </a>
     </div>
+
+    <footer class="gold-footer">
+        <p>PREMIER LEAGUE DEVOPS: 2</p>
+    </footer>
 </div>
 {% endblock %}
 
@@ -93,6 +93,23 @@
     @keyframes move {
         0% { left: -300px; }
         100% { left: 100%; }
+    }
+
+    .neon-blink {
+        color: #ff006e;
+        text-shadow: 0 0 10px #ff006e, 0 0 20px #ff006e, 0 0 30px #ff006e;
+        animation: neon-flicker 0.15s infinite;
+    }
+
+    @keyframes neon-flicker {
+        0%, 100% { 
+            color: #ff006e;
+            text-shadow: 0 0 10px #ff006e, 0 0 20px #ff006e, 0 0 30px #ff006e;
+        }
+        50% {
+            color: #ff1493;
+            text-shadow: 0 0 5px #ff006e, 0 0 10px #ff006e;
+        }
     }
 </style>
 {% endblock %}
