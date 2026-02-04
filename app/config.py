@@ -13,14 +13,10 @@ from dataclasses import dataclass
 class Config:
     """Base configuration."""
 
-    SECRET_KEY: str = os.environ.get("SECRET_KEY", "dev-secret-key")
+    SECRET_KEY: str = "dev-secret-key"
     DEBUG: bool = False
     TESTING: bool = False
-
-    # Database configuration
-    SQLALCHEMY_DATABASE_URI: str = os.environ.get(
-        "DATABASE_URL", "sqlite:///news_flash.db"
-    )
+    SQLALCHEMY_DATABASE_URI: str = "sqlite:///news_flash.db"
     SQLALCHEMY_TRACK_MODIFICATIONS: bool = False
 
 
@@ -52,3 +48,5 @@ config = {
     "production": ProductionConfig,
     "default": DevelopmentConfig,
 }
+
+
