@@ -5,8 +5,8 @@ This repository encapsulates all SQLAlchemy queries for the Subscriber model,
 keeping the business layer free from database-specific code.
 """
 
-from app import db
-from app.data.models.subscriber import Subscriber
+from application import db
+from application.data.models.subscriber import Subscriber
 
 
 class SubscriberRepository:

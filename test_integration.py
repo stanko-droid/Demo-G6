@@ -4,8 +4,8 @@ Tests all functionality before production deployment
 """
 
 import pytest
-from app import create_app, db
-from app.data.models.subscriber import Subscriber
+from application import create_app, db
+from application.data.models.subscriber import Subscriber
 
 
 @pytest.fixture

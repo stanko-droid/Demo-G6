@@ -9,7 +9,7 @@ data storage through the repository.
 import re
 from datetime import datetime, timezone
 
-from app.data.repositories.subscriber_repository import SubscriberRepository
+from application.data.repositories.subscriber_repository import SubscriberRepository
 
 
 class SubscriptionService:
@@ -84,13 +84,14 @@ class SubscriptionService:
 
     def subscribe(self, email: str, name: str | None) -> tuple[bool, str]:
         """
-        Full subscription flow: validate, check duplicate, save.
+        Full subscription flow: validate, check duplicate, save to both databases.
 
         This method orchestrates the complete subscription process:
         1. Validates the email format
         2. Normalizes email and name
-        3. Checks for existing subscription
-        4. Saves to database via repository
+        3. Checks for existing subscription in current database
+        4. Saves to current database (local or Azure depending on config)
+        5. Also saves to the OTHER database (Azure if dev, local if prod)
 
         Args:
             email: The subscriber's email address
@@ -109,12 +110,50 @@ class SubscriptionService:
         normalized_email = self.normalize_email(email)
         normalized_name = self.normalize_name(name)
 
-        # Check for duplicate subscription
+        # Check for duplicate subscription in current database
         if self.repository.exists(normalized_email):
             return False, "This email is already subscribed"
 
-        # Save to database
+        # Save to current database (SQLite for dev, Azure for prod)
         self.repository.create(email=normalized_email, name=normalized_name)
+        
+        # ALSO save to the OTHER database for synchronization
+        try:
+            from application import db, create_app
+            from application.data.models.subscriber import Subscriber
+            from flask import current_app
+            
+            # Get current environment
+            current_env = current_app.config.get("ENV", "development")
+            other_env = "production" if current_env == "development" else "development"
+            
+            print(f"📝 Syncing to {other_env} database...")
+            
+            # Create other app context
+            other_app = create_app(other_env)
+            with other_app.app_context():
+                # Check if already exists in other database
+                existing = db.session.query(Subscriber).filter_by(
+                    email=normalized_email
+                ).first()
+                
+                if not existing:
+                    # Save to other database
+                    subscriber = Subscriber(
+                        email=normalized_email,
+                        name=normalized_name
+                    )
+                    db.session.add(subscriber)
+                    db.session.commit()
+                    print(f"✅ Synced to {other_env} database")
+                else:
+                    print(f"ℹ️  Already in {other_env} database")
+                    
+        except Exception as e:
+            # Print error but don't fail the main subscription
+            error_msg = str(e)[:100]
+            print(f"⚠️  Sync to other database failed: {error_msg}")
+        
         return True, ""
 
     def process_subscription(self, email: str, name: str | None) -> dict:

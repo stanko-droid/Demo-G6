@@ -40,21 +40,22 @@ def create_app(config_name: str | None = None) -> Flask:
     Returns:
         Configured Flask application instance.
     """
-    # FIRST: Load environment variables from secret files
-    _root_path = Path(__file__).parent.parent
-    _database_url_file = _root_path / ".database-url"
-    _secret_key_file = _root_path / ".secret-key"
-    
-    if _database_url_file.exists():
-        with open(_database_url_file) as f:
-            os.environ["DATABASE_URL"] = f.read().strip()
-    
-    if _secret_key_file.exists():
-        with open(_secret_key_file) as f:
-            os.environ["SECRET_KEY"] = f.read().strip()
-    
     if config_name is None:
         config_name = os.environ.get("FLASK_ENV", "development")
+
+    # ONLY load environment variables from secret files in PRODUCTION
+    _root_path = Path(__file__).parent.parent
+    if config_name == "production":
+        _database_url_file = _root_path / ".database-url"
+        _secret_key_file = _root_path / ".secret-key"
+        
+        if _database_url_file.exists():
+            with open(_database_url_file) as f:
+                os.environ["DATABASE_URL"] = f.read().strip()
+        
+        if _secret_key_file.exists():
+            with open(_secret_key_file) as f:
+                os.environ["SECRET_KEY"] = f.read().strip()
 
     app = Flask(
         __name__,
@@ -65,11 +66,12 @@ def create_app(config_name: str | None = None) -> Flask:
     # Load configuration
     app.config.from_object(config[config_name])
     
-    # THEN: Override with environment variables if they exist
-    if "DATABASE_URL" in os.environ:
-        app.config["SQLALCHEMY_DATABASE_URI"] = os.environ["DATABASE_URL"]
-    if "SECRET_KEY" in os.environ:
-        app.config["SECRET_KEY"] = os.environ["SECRET_KEY"]
+    # THEN: Override with environment variables if they exist (production only)
+    if config_name == "production":
+        if "DATABASE_URL" in os.environ:
+            app.config["SQLALCHEMY_DATABASE_URI"] = os.environ["DATABASE_URL"]
+        if "SECRET_KEY" in os.environ:
+            app.config["SECRET_KEY"] = os.environ["SECRET_KEY"]
 
     # Initialize extensions
     db.init_app(app)
