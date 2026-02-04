@@ -2,7 +2,7 @@
 Joke service - handles business logic for jokes.
 """
 
-from app.data.repositories import JokeRepository
+from application.data.repositories import JokeRepository
 
 
 class JokeService:
