@@ -1,0 +1,5 @@
+RESOURCE_GROUP="rg-demo-g6"
+ACR_NAME="acrdemoG6"
+LOCATION="swedencentral"
+CAE_NAME="cae-demo-g6"
+CA_NAME="ca-demo-g6"
