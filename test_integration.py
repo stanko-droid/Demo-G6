@@ -126,13 +126,13 @@ class TestThreeTierArchitecture:
     
     def test_repository_exists(self, app):
         """✅ Test: Repository layer is available"""
-        from app.data.repositories.subscriber_repository import SubscriberRepository
+        from application.data.repositories.subscriber_repository import SubscriberRepository
         assert SubscriberRepository is not None
         print("✅ Repository layer exists")
     
     def test_service_exists(self, app):
         """✅ Test: Business service layer is available"""
-        from app.business.services.subscription_service import SubscriptionService
+        from application.business.services.subscription_service import SubscriptionService
         assert SubscriptionService is not None
         print("✅ Service layer exists")
     
@@ -228,7 +228,7 @@ class TestProductionReadiness:
         # Read app.py to verify it has the app instance
         with open('/Users/ludwigsevenheim/Demo-G6/app.py', 'r') as f:
             content = f.read()
-            assert 'from app import create_app' in content
+            assert 'from application import create_app' in content
             assert 'app = create_app()' in content
             print("✅ Gunicorn-compatible app instance in app.py")
 
