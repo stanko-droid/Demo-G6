@@ -4,11 +4,12 @@ on:
   push:
     branches: [main]
     paths:
-      - 'app/**'
+      - 'application/**'
       - 'Dockerfile'
       - 'requirements.txt'
       - 'entrypoint.sh'
       - '.github/workflows/deploy.yml'
+  workflow_dispatch:
 
 permissions:
   id-token: write
