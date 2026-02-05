@@ -5,9 +5,9 @@ This model belongs to the Data Layer and defines the database schema
 for storing subscriber information.
 """
 
-from datetime import datetime, timezone
+from datetime import datetime
 
-from app import db
+from application import db
 
 
 class Subscriber(db.Model):
@@ -27,9 +27,9 @@ class Subscriber(db.Model):
     email = db.Column(db.String(255), unique=True, nullable=False, index=True)
     name = db.Column(db.String(100), nullable=False, default="Subscriber")
     subscribed_at = db.Column(
-        db.DateTime(timezone=True),
+        db.DateTime,
         nullable=False,
-        default=lambda: datetime.now(timezone.utc),
+        default=datetime.utcnow,
     )
 
     def __repr__(self) -> str:

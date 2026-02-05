@@ -9,7 +9,7 @@ data storage through the repository.
 import re
 from datetime import datetime, timezone
 
-from app.data.repositories.subscriber_repository import SubscriberRepository
+from application.data.repositories.subscriber_repository import SubscriberRepository
 
 
 class SubscriptionService:
@@ -84,13 +84,16 @@ class SubscriptionService:
 
     def subscribe(self, email: str, name: str | None) -> tuple[bool, str]:
         """
-        Full subscription flow: validate, check duplicate, save.
+        Full subscription flow: ALWAYS save to Azure, then sync down to local.
+
+        Azure is the PRIMARY database (source of truth).
+        Local SQLite is a mirror/backup that syncs FROM Azure.
 
         This method orchestrates the complete subscription process:
         1. Validates the email format
         2. Normalizes email and name
-        3. Checks for existing subscription
-        4. Saves to database via repository
+        3. Saves to Azure database (PRIMARY)
+        4. Syncs data from Azure down to local SQLite (ONE-WAY)
 
         Args:
             email: The subscriber's email address
@@ -109,12 +112,76 @@ class SubscriptionService:
         normalized_email = self.normalize_email(email)
         normalized_name = self.normalize_name(name)
 
-        # Check for duplicate subscription
-        if self.repository.exists(normalized_email):
-            return False, "This email is already subscribed"
-
-        # Save to database
-        self.repository.create(email=normalized_email, name=normalized_name)
+        # ALWAYS save to Azure (production database - the source of truth)
+        try:
+            from application import db, create_app
+            from application.data.models.subscriber import Subscriber
+            
+            print(f"📝 Saving to Azure (PRIMARY database)...")
+            
+            # Create Azure app context (production)
+            azure_app = create_app('production')
+            with azure_app.app_context():
+                # Check if already exists in Azure
+                existing = db.session.query(Subscriber).filter_by(
+                    email=normalized_email
+                ).first()
+                
+                if existing:
+                    return False, "This email is already subscribed"
+                
+                # Save to Azure (primary)
+                subscriber = Subscriber(
+                    email=normalized_email,
+                    name=normalized_name
+                )
+                db.session.add(subscriber)
+                db.session.commit()
+                print(f"✅ Saved to Azure database")
+                    
+        except Exception as e:
+            error_msg = str(e)[:100]
+            print(f"❌ Failed to save to Azure: {error_msg}")
+            return False, f"Database error: {error_msg}"
+        
+        # NOW sync from Azure down to local SQLite (ONE-WAY)
+        try:
+            from application import db, create_app
+            from application.data.models.subscriber import Subscriber
+            
+            print(f"🔄 Syncing from Azure to local SQLite...")
+            
+            # Get all data from Azure
+            azure_app = create_app('production')
+            with azure_app.app_context():
+                azure_subscribers = db.session.query(Subscriber).all()
+            
+            # Write to local SQLite
+            local_app = create_app('development')
+            with local_app.app_context():
+                for azure_sub in azure_subscribers:
+                    # Check if exists locally
+                    local_exists = db.session.query(Subscriber).filter_by(
+                        email=azure_sub.email
+                    ).first()
+                    
+                    if not local_exists:
+                        # Copy from Azure to local
+                        local_sub = Subscriber(
+                            email=azure_sub.email,
+                            name=azure_sub.name,
+                            subscribed_at=azure_sub.subscribed_at
+                        )
+                        db.session.add(local_sub)
+                
+                db.session.commit()
+                print(f"✅ Synced to local SQLite database")
+                    
+        except Exception as e:
+            error_msg = str(e)[:100]
+            print(f"⚠️  Sync to local failed (non-critical): {error_msg}")
+            # Don't fail - Azure save was successful
+        
         return True, ""
 
     def process_subscription(self, email: str, name: str | None) -> dict:

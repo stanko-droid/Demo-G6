@@ -5,10 +5,13 @@ This blueprint handles all public-facing pages including the landing page
 and subscription flow.
 """
 
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, jsonify
+from sqlalchemy import text
 
-from app.business.services.subscription_service import SubscriptionService
-from app.business.services import JokeService
+from application import db
+from application.business.services.subscription_service import SubscriptionService
+from application.business.services import JokeService
+from application.data.models.subscriber import Subscriber
 
 bp = Blueprint("public", __name__)
 
@@ -58,4 +61,18 @@ def subscribe_confirm():
         "thank_you.html",
         email=normalized_email,
         name=normalized_name,
+    )
+
+
+@bp.route("/subscribers")
+def subscribers():
+    """Display all subscribers in a table."""
+    all_subscribers = db.session.query(Subscriber).order_by(
+        Subscriber.subscribed_at.desc()
+    ).all()
+    
+    return render_template(
+        "subscribers.html",
+        subscribers=all_subscribers,
+        total_count=len(all_subscribers),
     )

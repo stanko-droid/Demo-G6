@@ -7,20 +7,19 @@ for development. In production, set SECRET_KEY to a secure random value.
 
 import os
 from dataclasses import dataclass
+from pathlib import Path
 
 
 @dataclass
 class Config:
     """Base configuration."""
 
-    SECRET_KEY: str = os.environ.get("SECRET_KEY", "dev-secret-key")
+    SECRET_KEY: str = "dev-secret-key"
     DEBUG: bool = False
     TESTING: bool = False
-
-    # Database configuration
-    SQLALCHEMY_DATABASE_URI: str = os.environ.get(
-        "DATABASE_URL", "sqlite:///news_flash.db"
-    )
+    # Explicitly use the root directory for SQLite database
+    _root = str(Path(__file__).parent.parent)
+    SQLALCHEMY_DATABASE_URI: str = f"sqlite:///{_root}/news_flash.db"
     SQLALCHEMY_TRACK_MODIFICATIONS: bool = False
 
 
@@ -52,3 +51,5 @@ config = {
     "production": ProductionConfig,
     "default": DevelopmentConfig,
 }
+
+
