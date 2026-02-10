@@ -26,3 +26,7 @@ def create_admin_command(email, password):
     db.session.commit()
     
     click.echo(f"Succé! Skapade admin: {email}")
+
+def register_commands(app):
+    """Registrera alla CLI-kommandon"""
+    app.cli.add_command(create_admin_command)
