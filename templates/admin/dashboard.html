@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="margin: 2rem;">
+    
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h2>Admin Dashboard</h2>
+        <a href="{{ url_for('admin_bp.logout') }}" style="background-color: #d9534f; color: white; padding: 10px 15px; text-decoration: none; border-radius: 5px; font-weight: bold;">
+            Logga ut
+        </a>
+    </div>
+
+    <p>Antal prenumeranter i systemet.</p>
+
+    <table border="1" cellpadding="10" style="border-collapse: collapse; width: 100%;">
+        <thead>
+            <tr>
+                <th style="text-align: left;">ID</th>
+                <th style="text-align: left;">Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sub in subscribers %}
+            <tr>
+                <td>{{ sub.id }}</td>
+                <td>{{ sub.email }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="2">Inga prenumeranter än.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

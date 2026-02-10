@@ -13,6 +13,6 @@ app = create_app()
 
 if __name__ == '__main__':
     # This runs when executing: python app.py
-    # Also runs when Flask auto-discovers app.py with: flask run
+    # Flask CLI (flask run) ignores this block, so --port argument works
     app.run(debug=True, host='127.0.0.1', port=5000)
 

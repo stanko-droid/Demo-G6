@@ -39,15 +39,22 @@ def create_app(env=None):
     
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     
-    # Session security
-    app.config['SESSION_COOKIE_SECURE'] = True
+    # Session security - only enforce HTTPS in production
+    if env == "production":
+        app.config['SESSION_COOKIE_SECURE'] = True
+    else:
+        app.config['SESSION_COOKIE_SECURE'] = False
+    
     app.config['SESSION_COOKIE_HTTPONLY'] = True
     app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
 
     # Initiera extensions
     db.init_app(app)
     login_manager.init_app(app)
-    Talisman(app)
+    
+    # Talisman för security headers (only in production)
+    if env == "production":
+        Talisman(app)
     
     # Ställ in vart man skickas om man inte är inloggad
     login_manager.login_view = 'admin_bp.login'
