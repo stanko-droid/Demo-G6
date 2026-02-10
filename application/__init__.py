@@ -1,61 +1,29 @@
 """
 Demo G6 - Application Factory
-
-This module creates and configures the Flask application using the
-application factory pattern. This pattern enables:
-- Multiple instances with different configurations
-- Easy testing with test configurations
-- Delayed configuration loading
 """
-
 import os
 from pathlib import Path
-
 from flask import Flask
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager
+from flask_talisman import Talisman  # <--- SÄKERHET
 from dotenv import load_dotenv
 
 from .config import config
 
-# Load .env file if it exists (for development)
+# Ladda .env om den finns
 _env_file = Path(__file__).parent.parent / ".env"
 if _env_file.exists():
     load_dotenv(_env_file)
 
-# Create extensions at module level (initialized in create_app)
 db = SQLAlchemy()
 migrate = Migrate()
-
-
+login_manager = LoginManager()
 
 def create_app(config_name: str | None = None) -> Flask:
-    """
-    Create and configure the Flask application.
-
-    Args:
-        config_name: Configuration to use ('development', 'testing', 'production').
-                    Defaults to FLASK_ENV environment variable or 'development'.
-
-    Returns:
-        Configured Flask application instance.
-    """
     if config_name is None:
         config_name = os.environ.get("FLASK_ENV", "development")
-
-    # ONLY load environment variables from secret files in PRODUCTION
-    _root_path = Path(__file__).parent.parent
-    if config_name == "production":
-        _database_url_file = _root_path / ".database-url"
-        _secret_key_file = _root_path / ".secret-key"
-        
-        if _database_url_file.exists():
-            with open(_database_url_file) as f:
-                os.environ["DATABASE_URL"] = f.read().strip()
-        
-        if _secret_key_file.exists():
-            with open(_secret_key_file) as f:
-                os.environ["SECRET_KEY"] = f.read().strip()
 
     app = Flask(
         __name__,
@@ -63,25 +31,47 @@ def create_app(config_name: str | None = None) -> Flask:
         static_folder="presentation/static",
     )
 
-    # Load configuration
-    app.config.from_object(config[config_name])
-    
-    # THEN: Override with environment variables if they exist (production only)
-    if config_name == "production":
-        if "DATABASE_URL" in os.environ:
-            app.config["SQLALCHEMY_DATABASE_URI"] = os.environ["DATABASE_URL"]
-        if "SECRET_KEY" in os.environ:
-            app.config["SECRET_KEY"] = os.environ["SECRET_KEY"]
+    # --- DATABAS-KONFIGURATION ---
+    basedir = os.path.abspath(os.path.dirname(__file__))
+    root_dir = os.path.dirname(basedir)
+    db_path = os.path.join(root_dir, 'news_flash.db')
 
-    # Initialize extensions
+    app.config.from_object(config[config_name])
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + db_path
+    
+    print(f"\n---> KOPPLAR TILL DATABAS PÅ: {db_path}\n")
+
+    # --- INITIERA TILLÄGG ---
     db.init_app(app)
     migrate.init_app(app, db)
-
-    # Import models (after db.init_app to avoid circular imports)
-    from .data import models  # noqa: F401
     
-    # Register blueprints
+    # Initiera Login-systemet
+    login_manager.init_app(app)
+    login_manager.login_view = 'admin_bp.login' 
+
+    # Initiera Talisman (Säkerhet)
+    # force_https=False är viktigt när vi kör lokalt (127.0.0.1)
+    # content_security_policy=None tillåter oss använda enkel CSS/JS för nu
+    Talisman(app, force_https=False, content_security_policy=None)
+
+    # --- MODELLER & USER LOADER ---
+    from .data import models  # noqa: F401
+    from application.data.models.user import User
+
+    @login_manager.user_loader
+    def load_user(user_id):
+        return User.query.get(int(user_id))
+
+    # --- REGISTRERA BLUEPRINTS ---
     from .presentation.routes.public import bp as public_bp
     app.register_blueprint(public_bp)
+
+    from .admin import admin_bp
+    app.register_blueprint(admin_bp)
+
+    # --- REGISTRERA CLI-KOMMANDON (NYTT!) ---
+    # Detta gör att 'flask create-admin' fungerar i terminalen
+    from .commands import create_admin_command
+    app.cli.add_command(create_admin_command)
 
     return app
