@@ -24,8 +24,10 @@ def create_app():
 
     # Importera och registrera Blueprints
     from application.admin import admin_bp
+    from application.presentation.routes.public import bp as public_bp
     # (Lägg till fler blueprints här om du har, t.ex. main_bp)
     app.register_blueprint(admin_bp)
+    app.register_blueprint(public_bp)
 
     # --- HÄR ÄR DEN MAGISKA LÖSNINGEN ---
     with app.app_context():
