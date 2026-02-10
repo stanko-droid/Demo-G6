@@ -1,0 +1,191 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="subscribers-section">
+    <div class="container">
+        <h1>📋 Alla Registreringar</h1>
+        <p class="subscriber-count">Totalt: <strong>{{ total_count }}</strong> registreringar</p>
+        
+        {% if subscribers %}
+            <div class="table-wrapper">
+                <table class="subscribers-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Email</th>
+                            <th>Namn</th>
+                            <th>Registrerad</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for subscriber in subscribers %}
+                            <tr>
+                                <td class="id">{{ loop.index }}</td>
+                                <td class="email">{{ subscriber.email }}</td>
+                                <td class="name">{{ subscriber.name }}</td>
+                                <td class="date">{{ subscriber.subscribed_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="no-subscribers">
+                <p>❌ Inga registreringar än. <a href="{{ url_for('public.subscribe') }}">Registrera dig!</a></p>
+            </div>
+        {% endif %}
+        
+        <div class="actions">
+            <a href="{{ url_for('public.index') }}" class="btn btn-secondary">← Tillbaka</a>
+        </div>
+    </div>
+</section>
+
+<style>
+.subscribers-section {
+    padding: 3rem 2rem;
+    min-height: 70vh;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.subscribers-section h1 {
+    text-align: center;
+    margin-bottom: 1rem;
+    font-size: 2rem;
+}
+
+.subscriber-count {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+    color: #666;
+}
+
+.table-wrapper {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    overflow-x: auto;
+    margin-bottom: 2rem;
+}
+
+.subscribers-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.subscribers-table thead {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.subscribers-table th {
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 2px solid #667eea;
+}
+
+.subscribers-table tbody tr {
+    border-bottom: 1px solid #eee;
+    transition: background-color 0.2s;
+}
+
+.subscribers-table tbody tr:hover {
+    background-color: #f9f9f9;
+}
+
+.subscribers-table td {
+    padding: 1rem;
+}
+
+.subscribers-table .id {
+    font-weight: 600;
+    color: #667eea;
+    width: 40px;
+}
+
+.subscribers-table .email {
+    font-family: monospace;
+    color: #333;
+    word-break: break-all;
+}
+
+.subscribers-table .name {
+    color: #555;
+    font-weight: 500;
+}
+
+.subscribers-table .date {
+    color: #999;
+    font-size: 0.9rem;
+}
+
+.no-subscribers {
+    text-align: center;
+    padding: 3rem;
+    background: #f9f9f9;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+}
+
+.no-subscribers p {
+    margin: 0;
+    color: #666;
+}
+
+.no-subscribers a {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.no-subscribers a:hover {
+    text-decoration: underline;
+}
+
+.actions {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.btn {
+    display: inline-block;
+    padding: 0.8rem 1.5rem;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .subscribers-table {
+        font-size: 0.85rem;
+    }
+    
+    .subscribers-table th,
+    .subscribers-table td {
+        padding: 0.7rem;
+    }
+    
+    .subscribers-section h1 {
+        font-size: 1.5rem;
+    }
+}
+</style>
+{% endblock %}
