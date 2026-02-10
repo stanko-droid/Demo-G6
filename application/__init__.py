@@ -1,13 +1,31 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+import os
 
 # Initiera databas och login-manager utanför funktionen
 db = SQLAlchemy()
 login_manager = LoginManager()
 
 def create_app():
-    app = Flask(__name__)
+    # Få absolut sökväg till application mappen
+    app_dir = os.path.dirname(os.path.abspath(__file__))
+    root_dir = os.path.dirname(app_dir)
+    
+    # Låt Flask leta på både gamla och nya template locations
+    template_folders = [
+        os.path.join(app_dir, 'presentation', 'templates'),
+        os.path.join(root_dir, 'templates')
+    ]
+    
+    app = Flask(
+        __name__,
+        template_folder=template_folders[0],
+        static_folder=os.path.join(root_dir, 'static')
+    )
+    
+    # Lägg till båda template-mapparna så Flask kan hitta dem
+    app.jinja_loader.searchpath = template_folders
 
     # --- KONFIGURATION ---
     # (Behåll dina egna inställningar om de skiljer sig)
