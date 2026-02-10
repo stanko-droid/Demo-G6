@@ -19,6 +19,8 @@ export FLASK_ENV=production
 echo "Running database migrations..."
 flask db upgrade
 
-# Start gunicorn
-echo "Starting application server..."
-gunicorn --bind 0.0.0.0:5000 --workers 4 --timeout 120 "app:create_app()"
+echo "Seeding admin user..."
+flask create-admin "$ADMIN_USERNAME" "$ADMIN_PASSWORD"
+
+echo "Starting application..."
+exec gunicorn --bind 0.0.0.0:5000 --workers 2 --timeout 120 wsgi:app
