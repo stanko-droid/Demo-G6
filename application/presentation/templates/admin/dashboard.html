@@ -2,7 +2,14 @@
 
 {% block content %}
 <div style="margin: 2rem;">
-    <h2>Admin Dashboard</h2>
+    
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h2>Admin Dashboard</h2>
+        <a href="{{ url_for('admin_bp.logout') }}" style="background-color: #d9534f; color: white; padding: 10px 15px; text-decoration: none; border-radius: 5px; font-weight: bold;">
+            Logga ut
+        </a>
+    </div>
+
     <p>Antal prenumeranter i systemet.</p>
 
     <table border="1" cellpadding="10" style="border-collapse: collapse; width: 100%;">
