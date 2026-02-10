@@ -54,9 +54,8 @@ jobs:
       # Migrations and admin seeding run automatically at container startup via entrypoint.sh
       - name: Deployment complete
         run: |
-          echo "✅ Flask app deployed successfully to ${{ env.CONTAINER_APP }}"
+          echo "Flask app deployed successfully to ${{ env.CONTAINER_APP }}"
           echo "Container will start with entrypoint.sh phases:"
           echo "  1. Database migrations (flask db upgrade)"
           echo "  2. Admin user seeding (flask create-admin)"
           echo "  3. gunicorn server startup"
-          exit 1
