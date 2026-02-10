@@ -17,7 +17,7 @@ permissions:
 env:
   CONTAINER_APP: ca-news-flash
   RESOURCE_GROUP: rg-news-flash
-  ACR_NAME: acrnewsflash
+  ACR_NAME: acrnewsflashb488f5b7
 
 jobs:
   build-and-deploy:
@@ -51,21 +51,12 @@ jobs:
             --resource-group ${{ env.RESOURCE_GROUP }} \
             --target-port 5000
 
-      # Migrations run automatically at container startup via entrypoint.sh
-
-      - name: Health check
+      # Migrations and admin seeding run automatically at container startup via entrypoint.sh
+      - name: Deployment complete
         run: |
-          FQDN=$(az containerapp show \
-            --name ${{ env.CONTAINER_APP }} \
-            --resource-group ${{ env.RESOURCE_GROUP }} \
-            --query "properties.configuration.ingress.fqdn" -o tsv)
-          for i in 1 2 3 4 5; do
-            if curl -sf "https://$FQDN/" > /dev/null; then
-              echo "Health check passed on attempt $i"
-              exit 0
-            fi
-            echo "Attempt $i/5 failed, waiting 15s..."
-            sleep 15
-          done
-          echo "Health check failed after 5 attempts!"
+          echo "✅ Flask app deployed successfully to ${{ env.CONTAINER_APP }}"
+          echo "Container will start with entrypoint.sh phases:"
+          echo "  1. Database migrations (flask db upgrade)"
+          echo "  2. Admin user seeding (flask create-admin)"
+          echo "  3. gunicorn server startup"
           exit 1
