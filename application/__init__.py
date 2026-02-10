@@ -1,77 +1,57 @@
-"""
-Demo G6 - Application Factory
-"""
-import os
-from pathlib import Path
 from flask import Flask
-from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
-from flask_talisman import Talisman  # <--- SÄKERHET
-from dotenv import load_dotenv
 
-from .config import config
-
-# Ladda .env om den finns
-_env_file = Path(__file__).parent.parent / ".env"
-if _env_file.exists():
-    load_dotenv(_env_file)
-
+# Initiera databas och login-manager utanför funktionen
 db = SQLAlchemy()
-migrate = Migrate()
 login_manager = LoginManager()
 
-def create_app(config_name: str | None = None) -> Flask:
-    if config_name is None:
-        config_name = os.environ.get("FLASK_ENV", "development")
+def create_app():
+    app = Flask(__name__)
 
-    app = Flask(
-        __name__,
-        template_folder="presentation/templates",
-        static_folder="presentation/static",
-    )
+    # --- KONFIGURATION ---
+    # (Behåll dina egna inställningar om de skiljer sig)
+    app.config['SECRET_KEY'] = 'dev_nyckel_hemlig'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-    # --- DATABAS-KONFIGURATION ---
-    basedir = os.path.abspath(os.path.dirname(__file__))
-    root_dir = os.path.dirname(basedir)
-    db_path = os.path.join(root_dir, 'news_flash.db')
-
-    app.config.from_object(config[config_name])
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + db_path
-    
-    print(f"\n---> KOPPLAR TILL DATABAS PÅ: {db_path}\n")
-
-    # --- INITIERA TILLÄGG ---
+    # Initiera extensions
     db.init_app(app)
-    migrate.init_app(app, db)
-    
-    # Initiera Login-systemet
     login_manager.init_app(app)
-    login_manager.login_view = 'admin_bp.login' 
+    
+    # Ställ in vart man skickas om man inte är inloggad
+    login_manager.login_view = 'admin_bp.login'
 
-    # Initiera Talisman (Säkerhet)
-    # force_https=False är viktigt när vi kör lokalt (127.0.0.1)
-    # content_security_policy=None tillåter oss använda enkel CSS/JS för nu
-    Talisman(app, force_https=False, content_security_policy=None)
-
-    # --- MODELLER & USER LOADER ---
-    from .data import models  # noqa: F401
-    from application.data.models.user import User
-
-    @login_manager.user_loader
-    def load_user(user_id):
-        return User.query.get(int(user_id))
-
-    # --- REGISTRERA BLUEPRINTS ---
-    from .presentation.routes.public import bp as public_bp
-    app.register_blueprint(public_bp)
-
-    from .admin import admin_bp
+    # Importera och registrera Blueprints
+    from application.admin import admin_bp
+    # (Lägg till fler blueprints här om du har, t.ex. main_bp)
     app.register_blueprint(admin_bp)
 
-    # --- REGISTRERA CLI-KOMMANDON (NYTT!) ---
-    # Detta gör att 'flask create-admin' fungerar i terminalen
-    from .commands import create_admin_command
-    app.cli.add_command(create_admin_command)
+    # --- HÄR ÄR DEN MAGISKA LÖSNINGEN ---
+    with app.app_context():
+        # 1. Skapa alla tabeller (om de inte finns)
+        db.create_all()
+
+        # 2. Importera User här inne för att undvika krockar
+        from application.data.models.user import User
+
+        # 3. Kolla om admin-kontot saknas
+        admin_email = "admin@test.se"
+        existing_admin = User.query.filter_by(email=admin_email).first()
+
+        if not existing_admin:
+            print(f"⚠️  Varning: '{admin_email}' saknades i databasen.")
+            print("⚙️  Skapar admin-användare automatiskt...")
+            
+            # Skapa användaren
+            new_admin = User(email=admin_email)
+            new_admin.set_password("hemligt123")  # Sätter lösenordet
+            
+            db.session.add(new_admin)
+            db.session.commit()
+            
+            print(f"✅ KLART! Admin skapad. Logga in med: {admin_email} / hemligt123")
+        else:
+            print("ℹ️  Admin-konto finns redan. Startar appen...")
 
     return app
