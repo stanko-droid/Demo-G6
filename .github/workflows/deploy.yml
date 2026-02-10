@@ -15,8 +15,9 @@ permissions:
   contents: read
 
 env:
-  CONTAINER_APP: ca-demo-g6
-  RESOURCE_GROUP: rg-demo-g6
+  CONTAINER_APP: ca-news-flash
+  RESOURCE_GROUP: rg-news-flash
+  ACR_NAME: acrnewsflash
 
 jobs:
   build-and-deploy:
