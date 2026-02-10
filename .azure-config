@@ -1,5 +1,5 @@
 RESOURCE_GROUP="rg-news-flash"
-ACR_NAME="acrnewsflash"
+ACR_NAME="acrnewsflashb488f5b7"
 LOCATION="swedencentral"
 CAE_NAME="cae-news-flash"
 CA_NAME="ca-news-flash"
