@@ -33,15 +33,15 @@
     </div>
 
     <!-- Subscribe Button Section - BEFORE Hero -->
-    <div class="cta-section">
-        <h2 class="cta-title">Join Our Community</h2>
-        <p class="cta-subtitle">Get the latest tech news & street wisdom</p>
-        <div class="button-group">
-            <a href="{{ url_for('public.subscribe') }}" class="btn btn--primary btn--lg">
+    <div style="text-align: center; margin: 40px 0; padding: 30px 20px; background: white; border-radius: 10px;">
+        <h2 style="font-size: 2rem; color: #333; margin-bottom: 15px;">Join Our Community</h2>
+        <p style="font-size: 1.2rem; color: #666; margin-bottom: 25px;">Get the latest tech news & street wisdom</p>
+        <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+            <a href="{{ url_for('public.subscribe') }}" style="display: inline-block; padding: 15px 30px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 6px; font-size: 1.1rem; font-weight: 700;">
                 ✉️ Subscribe Now
             </a>
-            <a href="{{ url_for('public.subscribers') }}" class="btn btn--secondary btn--lg">
-                👥 View All Subscribers
+            <a href="{{ url_for('public.subscribers') }}" style="display: inline-block; padding: 15px 30px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; text-decoration: none; border-radius: 6px; font-size: 1.1rem; font-weight: 700;">
+                👥 View Subscribers
             </a>
         </div>
     </div>
