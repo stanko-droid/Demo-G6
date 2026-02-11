@@ -32,6 +32,20 @@
         <p id="joke-display" class="joke-text">Laddar din hustle...</p>
     </div>
 
+    <!-- Subscribe Button Section - BEFORE Hero -->
+    <div class="cta-section">
+        <h2 class="cta-title">Join Our Community</h2>
+        <p class="cta-subtitle">Get the latest tech news & street wisdom</p>
+        <div class="button-group">
+            <a href="{{ url_for('public.subscribe') }}" class="btn btn--primary btn--lg">
+                ✉️ Subscribe Now
+            </a>
+            <a href="{{ url_for('public.subscribers') }}" class="btn btn--secondary btn--lg">
+                👥 View All Subscribers
+            </a>
+        </div>
+    </div>
+
     <!-- Hero Section - Moved Down -->
     <section class="hero">
         <div class="hero__container">
@@ -42,20 +56,6 @@
             </p>
         </div>
     </section>
-
-    <!-- Subscribe Button Section -->
-    <div class="cta-section">
-        <h2 class="cta-title">Join Our Community</h2>
-        <p class="cta-subtitle">Be part of the G6 revolution</p>
-        <div class="button-group">
-            <a href="{{ url_for('public.subscribe') }}" class="btn btn--primary btn--lg">
-                ✉️ Subscribe Now
-            </a>
-            <a href="{{ url_for('public.subscribers') }}" class="btn btn--secondary btn--lg">
-                👥 View All Subscribers
-            </a>
-        </div>
-    </div>
 
     <footer class="gold-footer">
         <p>PREMIER LEAGUE DEVOPS: 2</p>

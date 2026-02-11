@@ -132,12 +132,14 @@ body {
 /* CTA Section */
 .cta-section {
     text-align: center;
-    margin-top: 60px;
-    margin-bottom: 60px;
-    padding: 40px 20px;
-    background: rgba(255, 255, 255, 0.95);
+    margin-top: 30px;
+    margin-bottom: 30px;
+    padding: 50px 20px;
+    background: rgba(255, 255, 255, 0.98);
     border-radius: 12px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    position: relative;
+    z-index: 10;
 }
 
 .cta-title {
