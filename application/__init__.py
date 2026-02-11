@@ -116,18 +116,22 @@ def create_app(env=None):
 
         # 3. Kolla om admin-kontot saknas
         admin_email = "admin@test.se"
-        existing_admin = User.query.filter_by(email=admin_email).first()
+        try:
+            existing_admin = User.query.filter_by(email=admin_email).first()
 
-        if not existing_admin:
-            print(f"⚠️  Varning: '{admin_email}' saknades i databasen.")
-            print("⚙️  Skapar admin-användare automatiskt...")
-            
-            # Skapa användaren
-            new_admin = User(email=admin_email)
-            new_admin.set_password("hemligt123")  # Sätter lösenordet
-            
-            db.session.add(new_admin)
-            db.session.commit()
+            if not existing_admin:
+                print(f"⚠️  Varning: '{admin_email}' saknades i databasen.")
+                print("⚙️  Skapar admin-användare automatiskt...")
+                
+                # Skapa användaren
+                new_admin = User(email=admin_email)
+                new_admin.set_password("hemligt123")  # Sätter lösenordet
+                
+                db.session.add(new_admin)
+                db.session.commit()
+        except Exception as e:
+            print(f"⚠️  Kunde inte verifiera admin-användare: {e}")
+            pass
             
             print(f"✅ KLART! Admin skapad. Logga in med: {admin_email} / hemligt123")
         else:
