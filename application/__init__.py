@@ -111,10 +111,23 @@ def create_app(env=None):
         # 1. Skapa alla tabeller (om de inte finns)
         db.create_all()
 
-        # 2. Importera User här inne för att undvika krockar
+        # 2. Uppdatera databasschemat om det behövs (lägg till saknade kolonner)
+        from sqlalchemy import inspect, text
+        inspector = inspect(db.engine)
+        
+        # Kolla om users-tabellen existerar och lägg till is_active om den saknas
+        if 'users' in inspector.get_table_names():
+            columns = [col['name'] for col in inspector.get_columns('users')]
+            if 'is_active' not in columns:
+                with db.engine.connect() as conn:
+                    conn.execute(text("ALTER TABLE users ADD COLUMN is_active BOOLEAN DEFAULT 1 NOT NULL"))
+                    conn.commit()
+                print("✅ Added is_active column to users table")
+
+        # 3. Importera User här inne för att undvika krockar
         from application.data.models.user import User
 
-        # 3. Kolla om admin-kontot saknas
+        # 4. Kolla om admin-kontot saknas
         admin_email = "admin@test.se"
         try:
             existing_admin = User.query.filter_by(email=admin_email).first()
@@ -129,11 +142,9 @@ def create_app(env=None):
                 
                 db.session.add(new_admin)
                 db.session.commit()
+                print(f"✅ KLART! Admin skapad. Logga in med: {admin_email} / hemligt123")
         except Exception as e:
             print(f"⚠️  Kunde inte verifiera admin-användare: {e}")
-            pass
-            
-            print(f"✅ KLART! Admin skapad. Logga in med: {admin_email} / hemligt123")
         else:
             print("ℹ️  Admin-konto finns redan. Startar appen...")
 
