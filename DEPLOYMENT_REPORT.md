@@ -57,7 +57,7 @@ az ad app federated-credential create \
 **Lösning:**
 ```bash
 # Flytta CLIENT_SECRET till secrets (encrypted)
-gh secret set AZURE_CLIENT_SECRET --body "[SECRET_REMOVED]"
+gh secret set AZURE_CLIENT_SECRET --body "[REMOVED]"
 gh variable delete AZURE_CLIENT_SECRET
 
 # Uppdatera workflow för OIDC
