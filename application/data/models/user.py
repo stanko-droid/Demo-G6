@@ -8,6 +8,7 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
+    is_active = db.Column(db.Boolean, default=True, nullable=False)
 
     # Funktion för att sätta lösenord (gör om text till hash)
     def set_password(self, password):

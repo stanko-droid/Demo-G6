@@ -34,6 +34,7 @@ class TestingConfig(Config):
     """Testing configuration."""
     TESTING: bool = True
     SQLALCHEMY_DATABASE_URI: str = "sqlite:///:memory:"
+    WTF_CSRF_ENABLED: bool = False
 
 
 @dataclass

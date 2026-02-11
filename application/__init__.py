@@ -31,6 +31,7 @@ def create_app(env=None):
         app.config['TESTING'] = True
         app.config['SECRET_KEY'] = 'test_secret_key'
         app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
+        app.config['WTF_CSRF_ENABLED'] = False
     else:
         app.config['DEBUG'] = True
         app.config['TESTING'] = False
@@ -75,6 +76,35 @@ def create_app(env=None):
     # Registrera CLI commands
     from application.commands import register_commands
     register_commands(app)
+
+    # Security headers
+    @app.after_request
+    def set_security_headers(response):
+        """Add OWASP-recommended security headers to all responses."""
+        response.headers['X-Content-Type-Options'] = 'nosniff'
+        response.headers['X-Frame-Options'] = 'SAMEORIGIN'
+        response.headers['X-XSS-Protection'] = '1; mode=block'
+        response.headers['Referrer-Policy'] = 'strict-origin-when-cross-origin'
+        
+        # Only set HSTS in production (requires HTTPS)
+        if env == "production":
+            response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
+        
+        return response
+
+    # Error handlers
+    @app.errorhandler(404)
+    def not_found_error(error):
+        """Custom 404 error page."""
+        from flask import render_template
+        return render_template('errors/404.html'), 404
+
+    @app.errorhandler(500)
+    def internal_error(error):
+        """Custom 500 error page."""
+        from flask import render_template
+        db.session.rollback()
+        return render_template('errors/500.html'), 500
 
     # --- HÄR ÄR DEN MAGISKA LÖSNINGEN ---
     with app.app_context():

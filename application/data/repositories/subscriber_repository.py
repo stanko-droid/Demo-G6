@@ -59,3 +59,12 @@ class SubscriberRepository:
         db.session.add(subscriber)
         db.session.commit()
         return subscriber
+
+    def get_all(self) -> list[Subscriber]:
+        """
+        Get all subscribers, ordered by newest first.
+
+        Returns:
+            List of all Subscriber instances, ordered by subscribed_at DESC
+        """
+        return Subscriber.query.order_by(Subscriber.subscribed_at.desc()).all()
