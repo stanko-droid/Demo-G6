@@ -433,7 +433,7 @@ Förvirring mellan GitHub Secrets och Variables. Variables är för icke-känsli
 **Lösning:**
 ```bash
 # Flytta till encrypted secrets
-gh secret set AZURE_CLIENT_SECRET --body "tfx8Q~ji..."
+gh secret set AZURE_CLIENT_SECRET --body "[SECRET_REMOVED]"
 
 # Ta bort från public variables
 gh variable delete AZURE_CLIENT_SECRET
